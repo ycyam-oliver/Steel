@@ -3,12 +3,12 @@
 (I) Objectives of the Project
 ========================================
 
-In the dataset, there are \~10k steel images of size 1600x256. In the images, the steel may or may not contain defects. There are in total four different types of defects. Our task is to draw a path around the defects if there is any (Segmentation Map) and determine what type of defect it is. 
+In the dataset, there are \~10k steel images of size 1600x256. In the images, the steel may or may not contain defects. There are in total four different types of defects. Our task is to draw a path around the defects if there is any (Segmentation Map) and determine what type of defect it is. <br>
 
-Some example of images and more details on the exploration of the data can be found in Data_Exploration.ipynb
+Some example of images and more details on the exploration of the data can be found in Data_Exploration.ipynb<br>
 
 For the final testing on Kaggle, the submission are evaluated by the Dice coefficient which compare the predicted set of pixels and the ground truth pixels.\
-(link to the Kaggle competition: https://www.kaggle.com/c/severstal-steel-defect-detection/overview/description)
+(link to the Kaggle competition: https://www.kaggle.com/c/severstal-steel-defect-detection/overview/description)<br>
 
 
 (II) Strategy to tackle the problem 
@@ -27,10 +27,10 @@ So for the test images, we will first determine if they have defects. Then for t
 (III) Structure of the Directories
 ========================================
 
-'''
+```
 Steel
 └── Data_Exploration.ipynb # contains more analysis of the images we have and train/test split for the images for models training
-├── data.py # define the data generator for the models 
+├── data.py # define the data generator for the models
 ├── data
 │   ├── train_images # for storage of images for training and validation
 │   ├── test_images # for storage of images for testing
@@ -54,7 +54,7 @@ Steel
 │   ├── Predict_VGG+Unet.ipynb # first determine if an image contains defect by VGG and then make classification predictiona and do segmentation map by Unet
 │   ├── Predict_DesNet+Unet.ipynb # first determine if an image contains defect by DenseNet and then make classification predictiona and do segmentation map by Unet
 │   └── csvfiles # contain the predictions from the two above ipynb
-''' 
+```
 
 ** training and testing images in 'data' can be downloaded from the Kaggle page
 
@@ -66,26 +66,26 @@ Steel
 PART (i). determining if an image has defect
 ----------------------------------------------------------------------
 
-[1a] DenseNet_Kaiming 
+[1a] DenseNet_Kaiming <br>
 
-Transfer learning of the DenseNet121 model with the head replaced by two fully connected layers for the binary classification (i.e. whether there is defect or not). Every layer of the model is trained. 
+Transfer learning of the DenseNet121 model with the head replaced by two fully connected layers for the binary classification (i.e. whether there is defect or not). Every layer of the model is trained. <br>
 
-Both the validation score of the binary classification here and the private/public score in the second stage of Unet predictions are improved if Kaiming initialiozation is used. 
-
-Resulting (best) accuracy on<br> 
-&emsp;Validation: 0.95386
-&emsp;Testing (the pseudo-test set from test/train split): 0.95
-
-
-[1b] VGG
-
-Same as the [1a] above except VGG model is used as the backbone here.
-
-Although the validation score of the binary classification is improved if Kaiming initialization is used, the private/public score in the second stage of Unet predictions would drop a bit with that. So Kaiming iniitialization is not employed here.
+Both the validation score of the binary classification here and the private/public score in the second stage of Unet predictions are improved if Kaiming initialiozation is used. <br>
 
 Resulting (best) accuracy on<br> 
-&emsp;Validation: 0.90971
-&emsp;Testing (the pseudo-test set from test/train split): 0.91
+&emsp;Validation: 0.95386<br>
+&emsp;Testing (the pseudo-test set from test/train split): 0.95<br>
+
+
+[1b] VGG<br>
+
+Same as the [1a] above except VGG model is used as the backbone here.<br>
+
+Although the validation score of the binary classification is improved if Kaiming initialization is used, the private/public score in the second stage of Unet predictions would drop a bit with that. So Kaiming iniitialization is not employed here.<br>
+
+Resulting (best) accuracy on<br> 
+&emsp;Validation: 0.90971<br>
+&emsp;Testing (the pseudo-test set from test/train split): 0.91<br>
 
 
 PART (ii). classification of the defects and semgentation map
@@ -94,18 +94,18 @@ PART (ii). classification of the defects and semgentation map
 The U_net model has the character of having two layers of small filters (3x3) for a larger receptive field while keeping the number of parameters relatively low. So it is chosen to perform the classification of the defect type the  while doing segmentation map of the defects.
 
 Resulting (least) loss on<br> 
-&emsp;Validation: 0.02395
+&emsp;Validation: 0.02395<br>
 
 (IV) Results on Kaggle
 ========================================
 
 [A] Predict_DenseNet+Unet
 ----------------------------------------------------------------------
-Private Score: 0.82175
-Public Score: 0.83428
+Private Score: 0.82175<br>
+Public Score: 0.83428<br>
 
 [B] Predict_VGG+Unet
 ----------------------------------------------------------------------
-Private Score: 0.80680
-Public Score: 0.80314
+Private Score: 0.80680<br>
+Public Score: 0.80314<br>
 
